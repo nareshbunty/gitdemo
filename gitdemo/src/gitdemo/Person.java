@@ -2,6 +2,7 @@ package gitdemo;
 
 public class Person {
 	private int id;
-	private int ih;
+	private int i;
+	
 
 }
