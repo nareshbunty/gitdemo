@@ -1,0 +1,138 @@
+div.container {
+    width: 100%;
+    border: 1px solid gray;
+}
+
+header {
+    padding: 1em;
+    color: white;
+    background-color: black;
+    clear: left;
+    text-align: center;
+}
+
+footer {
+    padding: 1em;
+    color: white;
+    background-color: black;
+    clear: left;
+    text-align: center;
+}
+
+.hb-nav {
+    float: left;
+    margin-top: 1%;
+    margin-left: 0%;
+    /* max-width: 10px;*/
+}
+
+/*
+.hb-nav {
+    float: left;
+    max-width: 160px;
+    margin: 0;
+}
+*/
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul a {
+    text-decoration: none;
+}
+
+.hb-article {
+
+  /*   float: right;
+ */
+    margin-left: 42%;
+}
+
+/*article {
+    margin-left: 50%;
+    border-left: 1px solid gray;
+    padding: 1em;
+    overflow: hidden;
+}*/
+
+.hb-ddown {
+    position: relative;
+    display: inline-block;
+}
+
+.hb-margin-btn {
+    margin-left: 5px !important
+}
+
+.hb-section,.hb-code{
+    margin-top:25px!important;
+    margin-bottom:25px!important
+}
+
+.hb-button-margin-left{
+    margin-left:45%!important
+}
+
+.hb-input{
+    padding:8px;
+    margin-left: 10%;
+
+    display:block;
+    border:none;
+    border-bottom:1px solid #ccc;
+    width:80%
+}
+
+.hb-inputtype{
+    padding:8px;
+    display:block;
+    border:none;
+    border-bottom:1px solid #ccc;
+    width:30%
+}
+
+
+.hb-label-marign{
+    margin-left: 10%;
+}
+
+.hb-label-mar-jour{
+    margin-left: 6%;
+}
+.hb-label-marign-top{
+    margin-top: 10%;
+}
+
+.hb-checkbox,.hb-radio{
+    width:18px;
+    height:18px;
+    position:relative;
+    top:8px
+}
+
+.hb-mar-left{
+    margin-left: 30%;
+}
+
+.hb-mar-toponeper{
+    margin-top: 0.5%;
+}
+
+.hb-right-jour{
+    float:middle!important;
+    margin-right: 30%;
+}
+
+.hb-img-left{
+	float: left;
+    margin-top: 1%;
+    margin-left: 0%;
+    /* max-width: 10px;*/
+}
+.hb-img-righttt{
+  float: right;
+  margin-right: 0%;
+   /*  margin-left: 50%; */
+}

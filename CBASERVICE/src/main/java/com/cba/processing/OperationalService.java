@@ -1,0 +1,10 @@
+package com.cba.processing;
+
+import com.cba.beans.AccountTransactions;
+
+public interface OperationalService {
+public String checkAccountStatusInfo(String accountNumber);
+
+public String deposit(AccountTransactions accountTransactions);
+public String getAccountBalance(String accountNumber);
+}
