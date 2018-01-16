@@ -27,7 +27,7 @@ public class SwaggerConfig {
 		return new ApiInfo("Warehouse Application ", 
 				"UOM Creations", 
 				"Warehouse 1.0", "", 
-				new Contact("SathyaTech", "http://www.sathyatech.com/", "javabyraghu@gmail.com"), 
+				new Contact("SathyaTech", "http://www.sathyatech.com/", "nareshgoud013@gmail.com"), 
 				"Apache 1.0 Licence", "http://www.sathyatech.com/");
 	}
 	
