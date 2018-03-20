@@ -53,33 +53,33 @@ public class PatientController {
 	
 	@RequestMapping(value = "{pId}", method = RequestMethod.GET)
 	public ResponseEntity<PatientBean>  getPatientById(@PathVariable ("pId")int pId){
-		PatientBean emp= patientService.getPatientById(pId);
-		if (emp == null) {
+		PatientBean pat= patientService.getPatientById(pId);
+		if (pat == null) {
 			return new ResponseEntity<PatientBean>(HttpStatus.NOT_FOUND);
 		}
 
-		return new ResponseEntity<PatientBean>(emp, HttpStatus.OK);
+		return new ResponseEntity<PatientBean>(pat, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "{pId}", method = RequestMethod.PUT)
 	public ResponseEntity<PatientBean> updatePatient(@PathVariable("pId") int pId, @RequestBody PatientBean patientBean){
-		PatientBean empl = patientService.getPatientById(pId);
-		if (empl == null) {
+		PatientBean pat = patientService.getPatientById(pId);
+		if (pat == null) {
 			return new ResponseEntity<PatientBean>(HttpStatus.NOT_FOUND);
 		}
 
 		//empl.setpId(patientBean.getpId());
 		//empl.setName(emp.getEmpName());
 
-		patientService.updatePatient(empl);
-		return new ResponseEntity<PatientBean>(empl, HttpStatus.OK);
+		patientService.updatePatient(pat);
+		return new ResponseEntity<PatientBean>(pat, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "{pId}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deletePatient(@PathVariable("pId") int pId){
 		
-		PatientBean emp = patientService.getPatientById(pId);
-		if (emp == null) {
+		PatientBean pat = patientService.getPatientById(pId);
+		if (pat == null) {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
 
