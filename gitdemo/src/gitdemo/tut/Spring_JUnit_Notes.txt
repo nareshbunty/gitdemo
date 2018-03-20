@@ -1,0 +1,98 @@
+Spring Integration With JUnit:-
+------------------------------
+   [Image]
+Step 1)Add Spring TestContext Framework
+jar "spring-test-3.2.6.jar". 
+This jar provides Integration class
+(between Spring and JUnit4) 
+as  SpringJUnit4ClassRunner
+*)jars specified in pom.xml:-
+1)Spring web MVC:-
+<dependency>
+ <groupId>org.springframework</groupId>
+ <artifactId>spring-webmvc</artifactId>
+ <version>3.2.6.RELEASE</version>
+</dependency>
+2)Spring Test ***:-
+<dependency>
+ <groupId>org.springframework</groupId>
+ <artifactId>spring-test</artifactId>
+ <version>3.2.6.RELEASE</version>
+</dependency>
+Step 2)Add @RunWith SpringJUnit4
+ClassRunner.class at TestCase (class)
+Step 3)copy spring config file into
+src/test/resources
+**)If folder not exist, create as 
+proj=>right click=>buildpath=>config
+build path=>source=>add Folder
+=>Create Folder=>enter name as 
+ "src/test/resources".
+file name ex: sample-servlet.xml
+Step 4)apply @ContextConfig with 
+spring config file name.
+Step 5)Autowire the required classes.
+Step 6)Define Test methods.
+
+Example:-package com.app;
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(
+   "/sample-servlet.xml")
+public class TestSpringSample {
+ @Autowired
+ private CodeUtil codeUtil;
+ @Autowired
+ private CodecUtil codecUtil;
+
+ private String pwd;
+ private String encStr;
+ private String decStr;
+
+ @Before
+ public void setPwd()
+  pwd=codeUtil.getPwd();
+ }
+ @Test
+ public void testACheckNull(){
+  assertNotNull("Generated Pwd is Null"
+                      ,pwd);
+ }
+ @Test
+ public void testBCheckEmpty(){
+  assertNotEquals(
+   "Generated Pwd is Empty","",pwd);
+ }
+ @Test
+ public void testCEncCheck(){
+   encStr=codecUtil.doEncode(pwd);
+   if(encStr==null || 
+      "".equals(encStr.trim()) ){
+    fail("Encoding of String is
+        not proper"); 
+ }
+ @Test
+ public void testDDecCheck(){
+  decStr=codecUtil.doDecode(encStr);
+  assertEquals(decStr,pwd);
+  assertTrue(decStr.equals(pwd));
+ }
+ @After
+ public void setNullData(){
+   pwd=null;
+   encStr=null;
+   decStr=null;
+ }
+}
+==================
+i)LocationSave Test
+(save Object,PK is generated or not?
+ pk should not be zero -else fail())
+ii)Location Data load Test
+loadAll --> List (not empty, not null)
+iii)EmailTest
+use timeout  5000 millsec
+iv)EDI Non Empty and Conversion
+ JSON test.
+Convert Obj->JSON , Json -notnull
+check (fail) for not empty also.
+
