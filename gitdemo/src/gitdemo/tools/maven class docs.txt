@@ -1,0 +1,48 @@
+MAVEN
+=======
+=>In project developement, execution and deployment there will be multiple
+complicated ,repetative operations. These operations are called build operations
+=>Keep our project ready for execution /release is called building project. Doing
+various activities of build process manually is complex and error prone process.
+
+=> To overcome this problem take the support of bat file and automat the process
+=> The liimiations with .bat  file we can not write conditional statements to
+perform build activities
+=>To overcome this problem we can go for ant build tool where we can
+automat build activities in condtional env.. by using build.xml file declaratevely.
+=> Ant  is just build Tool but it can not be used for project management activities
+like dowloading jar files , maintaining repositories, providing standard directory
+structures and etc..
+=>To these problems of ANT we can use Maven tool which is not only
+build tool and it is also a Project management tool.
+
+Maven features
+---------------------
+a) Can download jar files dynamically 
+b) Can maintain multiple repositories having jar files, plugins and etc..
+c) provides standard project directory structures
+d) Gives Maven inheritance to share jar files and plugin amoing the multiple
+projects
+e) Allows to develop multiple module projects
+f) Can generate jar ,war,ear and etc.. packaging based  comps or Apps
+g) Can run unit tests and can generate unit test reports
+h) Can generate project documentation
+i) Can clean and install the projects in the local servers or remote servers
+and etc...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

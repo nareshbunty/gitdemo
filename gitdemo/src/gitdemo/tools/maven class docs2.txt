@@ -1,0 +1,70 @@
+Local repository
+==============
+->It is user specific repository, Generally it will be collected
+from TL/PL who creates  Mave project directory structure.
+->contains jars ,plugins , current project related packings
+and etc..
+->Default location :  c:\users\<usernmae>\.m2
+->Will be created automatically for any maven command
+apart from (mvn -version)
+->Location can be changed throuhg 
+   <maven_home>\conf\settings.xml file using
+
+   <localRepository>d:\\maven</localRepository>
+Central Repository
+=================
+=>Avaialble in internet , managed by maven/Apache
+=>url : http://repo.maven.apache.org/maven2
+=> Generally maintains  free jars and plugins
+Remote repositories
+==================
+=>Either company specific or Vendor specific repositories
+=>eg:  UHG repository, Jboss repository
+=> Will be used only when <repository> tag cfg.. in pom.xml
+
+Example1 (standaloneApp)
+-------------------------------------
+d:\maven
+      |--->example1>mvn archetype:generate
+
+d:\maven
+      |--->example
+                 |---->MathProj1
+                            |--->src
+                                     |---->main
+                                                  |-->java
+                                                          |--->com.nt
+                                                                      |--->App.java
+                                    |--->test
+                                             |---> ....
+                           |--->pom.xml
+E:\...\MathProj1>mvn compile
+ -->Compiles the  App.java  (all source files)
+e:\..\MathProj1>mvn package
+  -->Generates jar files in tagert folder having 
+       <projectname>-ver.jar file
+
+e:\...\MathProj1>mvn clean 
+  -->Cleans the project .. deletes target folder
+e:\...\MathProj1>mvn clean package
+  -->Cleans the project and also creates jar file with
+ latest code
+To run jar file App manually
+ MathProj1>java -cp target/MathProj1-1.0-SNAPSHOT.jar  com.nt.App
+
+
+
+
+
+  
+                                                    
+                
+
+
+
+
+
+
+
+
+
