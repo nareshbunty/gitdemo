@@ -1,0 +1,156 @@
+Students database management:CRUD
+---------------------------------
+>use studentsdb
+
+>doc = {  
+    name: 'murthy',  
+    class: '12th',  
+    subjects: ['physics', 'chemisrty', 'maths', 'english'],  
+    address: {  
+        house_no: '123',  
+        sector: '50',  
+        city: 'noida'  
+    }  
+}  
+>db.students.insert(doc);
+
+>db.students.insert({  
+    name: 'Sriram',  
+    class: '12th',  
+    subjects: ['physics', 'chemistry', 'math', 'english'],  
+    address: {  
+        house_no: '12B',  
+        block: 'B',  
+        sector: 12,  
+        city: 'Chennai',  
+    },  
+    grade: [{  
+            exam: 'unit test 1',  
+            score: '60%'  
+        }, {  
+            exam: 'unit test 2',  
+            score: '70%'  
+        }  
+  
+    ]  
+});  
+
+>db.students.find().pretty()
+
+
+marks collection with 100 records
+>for(i=0;i<100;i++)  
+{  
+    subjects=['chemistry','physics','maths','english'];  
+    for(j=0;j<5;j++)  
+    {  
+        db.marks.insert({  
+            name:"student"+ i,  
+            subject:subjects[j],  
+            marks:Math.round(Math.random()*100)  
+        }  
+        );  
+    }  
+}   
+
+ find all the records of student0
+>db.marks.find({name:'student0'})  
+
+Find record of student0 in subject computer:
+>db.marks.find({name:'student0',subject:'computer'}).pretty() 
+
+Find records of all students whose marks in computer is greater than 50:
+>db.marks.find({subject:'computer',marks:{$gt:50}}).pretty()  
+
+Find records of all students whose marks in computer is greater than 50 and less than equal to 90:
+>db.marks.find({subject:'computer',marks:{$gt:50,$lte:90}}).pretty() 
+
+find the records in which class field exists:
+>db.mycol.find({class:{$exists:true}}) 
+
+we can write $exists : false for records in which class field doesn’t exist. 
+
+
+//we have another collection called additionalsubject
+
+db.additionalsubject.insert({name:'student1',subject:['arts','music']})  
+db.additionalsubject.insert({name:'student2',subject:['sports','arts']})  
+db.additionalsubject.insert({name:'student3',subject:['sports','cooking','music']})  
+db.additionalsubject.insert({name:'student4',subject:['arts','craft','music']}) 
+
+
+find the records of those students who are enrolled in arts. So the query will be written as: 
+>db.additionalsubject.find({subject:'arts'})
+
+find records of those students who are enrolled in arts and music both, then our query will be:
+>db.additionalsubject.find({subject:{$all:['arts','music']}}) 
+
+find the records of students who are either enrolled in sports or arts.  
+>db.additionalsubject.find({subject:{$in:['sports','arts']}})
+
+find the grade of exam unit test 1 then the query will be written as:
+>db.mycol.find({'grade.exam' :'unit test 1'})  
+
+Update:
+------
+change the subject of student1:(Whole document)
+>db.additionalsubject.update({name:'student1'},{subject:['craft']})
+   
+update only desired field:
+------------------------
+change the name of student2 to ‘kiran’,only name 
+>db.additionalsubject.update({name:'student2'},{$set:{name:'xyz'}})  
+
+Removing undesirable field means we can remove a field from a document when we don’t require it with $unset
+
+>db.additionalsubject.update({name:'xyz'},{$unset:{subject:1}})
+
+working with upsert in update:
+-----------------------------
+Update command searches for the record that matches the criteria specified in the parameter and if finds the record then it updates it otherwise nothing is updated. We have a special operator upsert that creates the new record and then update it. 
+
+>db.additionalsubject.update({name:'student5'},{$set:{subject:['music']}},{upsert:true})
+
+update arrays in a document:
+---------------------------
+Change subject of student3 from sports to arts:
+
+>db.additionalsubject.update({name:'student3'},{$set:{'subject.0':'arts'}});  
+
+Subject is the array so if we want to change the subject indexed at 0th place we will write subject.0
+ 
+Add one more subject to student3 record. For this we have $push:
+>db.additionalsubject.update({name:'student3'},{$push:{'subject':'sports'}})  
+
+$pop to remove a value from the array. But it will remove the rightmost value from the array.
+
+$pop : 1 (remove rightmost value)
+$pop : -1 (remove leftmost value)
+>db.additionalsubject.update({name:'student3'},{$pop:{'subject':1}});  
+
+$pushAll to add one or more value to array. 
+$pull to remove one specified value from array
+$pullAll to remove one or more values from the array.
+
+>db.additionalsubject.update({name:'student3'},{$pushAll:{'subject':['sports','craft']}})  
+>db.additionalsubject.update({name:'student3'},{$pullAll:{'subject':['sports','craft']}})  
+
+MongoDB updates only one document that fulfil the matching criteria but if you want to update all document at a time, then we have to pass one additional parameter mult:true.
+
+if we want one more additional field to all document of additionalsubject collection:
+>db.additionalsubject.update({},{$set:{'class':’12th’}},{multi:true})
+
+Remove()
+Remove:
+------
+Remove command is used to remove records from collection, it works the same as find command and requires one parameter which is the matching criteria for the document.
+
+to remove the record of student named student3
+
+>db.additionalsubject.remove({name:'student3'})  
+
+To remove all documents of a collection
+>db.additionalsubject.remove({})  
+
+It will remove all the documents of collection.  
+----------------------------------------------

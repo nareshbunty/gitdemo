@@ -1,0 +1,207 @@
+Mongodb commands:
+================
+
+show dbs
+// List Data Base
+
+show collections
+// List Collections
+
+use test
+// Select Db
+
+db
+//already Data Base
+
+db.link.drop()
+// Drop Collection
+
+db.link.count()
+// Show Count Document
+
+db.system.namespaces
+//collection contains information about all of the database’s collections
+
+db.system.indexes
+//collection lists all the indexes in the database. 
+//Add and remove data from this collection via the ensureIndex() and dropIndex()
+
+db.system.profile
+//collection stores database profiling information. 
+
+
+// insert Record 
+db.link.insert({ name : "Sriram" , Famile : "Murthy" , tag : ["tutorial" , "Learning" ] });
+
+var doc = {};
+doc.family = "Murthy";
+doc.tag = ["tutorial" , "Learning"];
+doc.name = {};
+doc.name.fname = "Sriram";
+doc.name.lname = "Murthy";
+doc.time = new date;
+doc     
+db.link.save(doc);
+
+
+
+// Query Record /////////////////////////////////////////////////////////////////////////////////////////////
+
+db.link.find()
+db.link.find().name
+db.link.find({ name : "Sriram"})
+db.link.findOne({ name : "Sriram" })
+db.link.find()[0]
+db.link.find().forEach(printjson);
+
+var d = db.link.find()[0]
+db.link.find(name : d.name )
+
+db.link.find({ num : { $gt : 50 , $lt : 150 }});
+// $gt > 50 , $lt < 50 , $gte => 50 , $lte <= 50
+
+db.link.find({ name : { $in : [ "Sriram" , "Murthy" ]} });
+// $in = Match , $nin = Not Match , $all = Match Match
+
+db.link.find({ name.first : { $ne : "Sriram" } });
+// All Document That Name.first Not Sriram
+
+db.link.find({ $or : [{first.name : "Sriram"} , {last.name : "Murthy" }] });
+// All Document That First Name Is Sriram OR Last Name Is Murthy
+
+db.link.find({ $nor : [{first.name : "Sriram"} , {last.name : "Murthy" }] });
+// All Document That No First Name Is Sriram OR  No Last Name Is Murthy
+
+db.link.find({ $and : [{first.name : "Sriram"} , {last.name : "Murthy" }] });
+// All Document That First Name Is Sriram AND Last Name Is Murthy
+db.link.find({ name : {first : "Sriram" , last : "Murthy"} });
+
+db.link.find({ email : { $exists : true } });
+// All Document That Are Email
+
+db.link.find({ number : {  $mod [ 5 , 0]} });
+//All Document That Number Mod 5 = 0
+
+db.link.find({ number : { $not : {  $mod [ 5 , 0]} }]);
+//All Document That No Number Mod 5 = 0
+
+db.link.find({ login : { $elemMatch : { minutes : 20 } }});
+// All Document That login child Have "Minutes : 20"
+
+db.link.find({ login : { $elemMatch : { at : { $lt : new Date(2012, 3, 30) } } }});
+// All Documetn That Login From Less Now ago
+
+db.link.find({ $where : 'this.name.first === "Sriram"' , ... });
+db.link.find({ 'this.name.first === "Sriram"' , ... });
+// All Document That name First Is Sriram And ....
+
+var f = function(){ return this.name.first === "Sriram" };
+db.users.find(f);
+db.users.find({ $where: f });
+// Create Function
+
+
+db.user.count();
+
+db.user.find( {} , { name : 1 , pass : 1});
+
+db.user.find( {} , { name : 1 , pass : 1}).sort({ number : 1 });
+// Sort 1 And -1
+
+db.user.find( {} , { name : 1 , pass : 1}).sort({ number : 1 }).limit(1);
+
+db.link.find({} , {name :1}).skip(1 * 3).limit(3)
+// find document after 3 doument 1 document
+
+
+
+
+// Update /////////////////////////////////////////////////////////////////////////////////////////////////
+
+db.link.update({ 'name' : "Sriram"} , { 'name':"Sriram", 'family' : "Dhulipala"})
+
+db.link.update({ 'name' : "Sriram"} , { 'name':"Sriram", 'family' : "Dhulipala"} , true);
+// Create If Not Exists
+
+var v = { title : "tutplus+"};
+db.link.update( v , { $inc : { fav : 10 }})
+// fav = fav + 10
+
+db.link.update({ $set{ email : 'Murthy.com@gmail.com '}};
+// OverWrite Or Create A New Field
+
+b.link.update({ $unset{ email : 'Murthy.com@gmail.com '}};
+// Delete A Field
+
+var bob = db.link.findOne();
+bob.name = "Ali";
+db.link.save(bob);
+
+db.user.findAndModify({
+	query : {name : "Sriram"},
+	update : { $set :{ age : 20} },
+	new : true / false,
+	sort : {title : 1 },
+	field : {title : 1 , age : 1 }
+});
+
+var v = { title : "tutplus" };
+db.link.find(n);
+db.link.update(n , { $push : { tags: ['blogs','site]' }} ); 
+// Add Several Tag To
+
+db.link.update(n , { $pushAll : { tags: ['blogs' , 'site'] }} );
+// Add Several Tag To  New Array 
+
+db.link.update(n , { $addToSet : { tags : 'blogs' }});
+// Add Blogs To Array  if the value is not in the array already
+
+db.link.update(n ,{ $pull : {tags : 'blogs'}});
+// removes all instances of a value from an existing array
+
+db.link.update(n ,{ $pullAll : {tags : 'blogs'}});
+//removes multiple values from an existing array
+
+db.link.update( n , { $pop : { tags : 1}});
+//operator removes the first or last element of an array. Pass $pop a value of 1 to remove the last element in an array and a value of -1 to remove the first element of an array
+
+db.link.update( {random:true} , {$rename : {'random' : 'tasadofi'}} );
+//updates the name of a field
+
+db.source-namespace.renameCollection( "target" );
+// updates the name of a Collection
+
+
+
+
+
+// Deleting ///////////////////////////////////////////////////////////////////////////////////////////////
+
+db.link.remove()
+// Delete All Document in Collection
+
+db.link.remove({ 'name : 'Sriram' });
+// Delete Document That Field name = Sriram
+
+db.link.findAndModify({
+	query : { 'name' : 'Sriram'},
+	remove : true
+});
+
+db.dropDatabase();
+// Drop already DataBase
+
+
+//// Indexing /////////////////////////////////////////////////////////////////////////////////////////////////
+
+More Information in : http://docs.mongodb.org/manual/administration/indexes/
+
+
+db.system.indexes.find()
+
+db.link.find({ 'title' : 'TutsPlus' }).explain();
+//explain() method provides information on the query plan. The query plan is the plan the server uses to find the matches for a query. This information may be useful when optimizing a query.
+
+db.link.ensureIndex({ 'title' :  1 });
+//Creates an index on the field specified, if that index does not already exist.
+//the index. A 1 specifies ascending and a -1 specifies descending.

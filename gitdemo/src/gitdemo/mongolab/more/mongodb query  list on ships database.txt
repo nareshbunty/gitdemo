@@ -1,0 +1,124 @@
+  MONGODB Command List on Shipping database
+ -----------------------------------------
+
+use shipsdb
+
+show dbs
+
+show collections
+
+db.ships.insert({name:'USS Enterprise-D',operator:'Starfleet',type:'Explorer',class:'Galaxy',crew:750,codes:[10,11,12]})
+db.ships.insert({name:'USS Prometheus',operator:'Starfleet',class:'Prometheus',crew:4,codes:[1,14,17]})
+db.ships.insert({name:'USS Defiant',operator:'Starfleet',class:'Defiant',crew:50,codes:[10,17,19]})
+db.ships.insert({name:'IKS Buruk',operator:' Klingon Empire',class:'Warship',crew:40,codes:[100,110,120]})
+db.ships.insert({name:'IKS Somraw',operator:' Klingon Empire',class:'Raptor',crew:50,codes:[101,111,120]})
+db.ships.insert({name:'Scimitar',operator:'Romulan Star Empire',type:'Warbird',class:'Warbird',crew:25,codes:[201,211,220]})
+db.ships.insert({name:'Narada',operator:'Romulan Star Empire',type:'Warbird',class:'Warbird',crew:65,codes:[251,251,220]})
+
+query:
+-----
+db.ships.find()
+db.ships.findOne()
+db.ships.find({}, {name:true, _id:false})   	//Shows only the names of the ships
+db.ships.findOne({'name':'USS Defiant'})    	//Finds one document by attribute
+
+db.ships.find({class:{$gt:’P'}
+db.ships.find({class:{$lte:’P'}
+db.ships.find({type:{$exists:true}})         // does an attribute exist or not
+db.ships.find({name:{$regex:’^USS\\sE’}})    // Perl-style pattern matching
+db.ships.find({name : {$type:2}})            // search by type of an element
+
+
+Updating documents:
+------------------
+db.ships.update({name : 'USS Prometheus'}, {name : 'USS Something'})  // Replaces the whole document
+
+db.ships.update({name : 'USS Something'},
+ {$set : {operator : 'Starfleet', class : 'Prometheus'}})  //changes certain attributes of a given document
+
+db.ships.update({name : 'USS Something'}, {$unset : {operator : 1}})  //  removes an attribute from a given document
+
+Removing documents:
+-------------------
+
+db.ships.remove({name : 'USS Prometheus'}) removes the document
+db.ships.remove({name:{$regex:’^USS\\sE’}}) removes using operator
+
+Indexes:
+-------
+
+Creating an index db.ships.ensureIndex({name : 1})
+Dropping an index db.ships.dropIndex({name : 1})
+Creating a compound index db.ships.ensureIndex({name : 1, operator : 1, class : 0})
+Dropping a compound index db.ships.dropIndex({name : 1, operator : 1, class : 0})
+Creating a unique compound index db.ships.ensureIndex({name : 1, operator : 1, class : 0}, {unique : true})
+
+Pipeline  Stages:
+----------------
+$project :  Change the set of documents by modifying keys and values. This is a 1:1 mapping
+
+$match   : This is a filtering operation and thus this can reduce the amount of documents that are given 
+           as input to the next stage. This can be used for example if aggregation should only happen on a subset of the 	   data.
+
+$group   : This does the actual aggregation and as we are grouping by one or more keys this can have a reducing effect
+	   on the amount of documents.
+
+$sort 	 : Sorting the documents one way or the other for the next stage. It should be noted that this might use a lot 	    of memory. Thus if possible one should always try to reduce the amount of documents first.
+
+$skip    : With this it is possible to skip forward in the list of documents for a given amount of documents. 
+	   This allows for example starting only from the 10th document.
+ 	    Typically this will be used together with “$sort” and especially together with “$limit”.
+
+$limit   : This limits the amount of documents to look at by the given number starting from the current position.
+
+$unwind  :  This is used to unwind document that are using arrays.
+             When using an array the data is kind of pre-joined and this operation will be undone with this to have 	     individual documents again. Thus with this stage we will increase the amount of documents for the next stage. 
+
+
+Aggregations:
+------------
+db.ships.aggregate([{$group : {_id : "$operator", num_ships : {$sum : 1}}}])
+
+	Above command Counts the number of ships per operator, would be in SQL:
+	SELECT operator, count(*) FROM ships GROUP BY operator;
+
+db.ships.aggregate([{$project : {_id : 0, operator : {$toLower
+ : "$operator"}, crew : {"$multiply" : ["$crew",10]}}}])
+
+	Combination of $project-stage and $group-stage.
+
+Aggregation Expressions
+-----------------------
+$sum : Summing up values 
+	> db.ships.aggregate([{$group : {_id : "$operator", num_ships : {$sum : "$crew"}}}])
+
+$avg : Calculating average values 
+	> db.ships.aggregate([{$group : {_id : "$operator", num_ships : {$avg : "$crew"}}}])
+
+$min / $max :  Finding min/max values
+	> db.ships.aggregate([{$group : {_id : "$operator", num_ships : {$min : "$crew"}}}])
+
+$push : Pushing values to a result array
+
+	>db.ships.aggregate([{$group : {_id : "$operator", classes : {$push: "$class"}}}])
+
+$addToSet : Pushing values to a result array without duplicates
+	> db.ships.aggregate([{$group : {_id : "$operator", classes : {$addToSet :"$class"}}}])
+
+$first / $last : Getting the first / lastdocument
+	> db.ships.aggregate([{$group : {_id : "$operator", last_class : {$last :"$class"}}}])
+
+Sharding:
+--------
+In the context of replica sets the value for the w-parameter now means the
+amount of nodes that have acknowledged a write. There is a useful short
+notation to ensure write was done to a majority of nodes by using
+w=’majority’. For the journal-parameter the value of one is still the best that
+can be done. It means the data is written to the journal of the primary node.
+
+- Every document has to define a shard-key.
+- The value of the shard-key is immutable.
+- The shard-key must be part of an index and it must be the first field in that index.
+- There can be no unique index unless the shard-key is part of it and is then the first field.
+- Reads done without specifying the shard-key will lead to requests to all the different shards.
+- The shard-key must offer sufficient cardinality to be able to utilize all shards.
